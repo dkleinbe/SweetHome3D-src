@@ -111,6 +111,7 @@ public class OBJWriter extends FilterWriter {
   private String  mtlFileName;
 
   private int shapeIndex = 1;
+  private int objectIndex = 1;
   private Map<Point3f, Integer>    vertexIndices = new HashMap<Point3f, Integer>();
   private Map<Vector3f, Integer>   normalIndices = new HashMap<Vector3f, Integer>();
   private Map<TexCoord2f, Integer> textureCoordinatesIndices = new HashMap<TexCoord2f, Integer>();  
@@ -340,6 +341,18 @@ public class OBJWriter extends FilterWriter {
         ((TransformGroup)node).getTransform(transform);
         parentTransformations.mul(transform);
       }
+      if (node instanceof Wall3D) {
+        this.out.write("o wall_" + this.objectIndex + "\n");
+        this.objectIndex++;
+      }
+      if (node instanceof Ground3D) {
+        this.out.write("o ground_" + this.objectIndex + "\n");
+        this.objectIndex++;
+      }
+      if (node instanceof HomePieceOfFurniture3D) {
+        this.out.write("o furniture_" + this.objectIndex + "\n");
+        this.objectIndex++;
+      }      
       // Write all children
       Enumeration<?> enumeration = ((Group)node).getAllChildren(); 
       while (enumeration.hasMoreElements()) {
